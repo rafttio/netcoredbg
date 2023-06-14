@@ -176,17 +176,6 @@ namespace
                 result = &(*lower);
                 break;
             }
-            // result was found on previous cycle, check for closest nested method
-            // need it in case of breakpoint setuped at lines without code and before nested method, for example:
-            // {
-            //  <-- breakpoint at line without code (inside method)
-            //     void Method() {...}
-            // }
-            else if (result && lineNum <= (*lower).startLine && (*lower).endLine <= result->endLine)
-            {
-                closestNestedToken = (*lower).methodDef;
-                break;
-            }
             else
                 break;
         }
