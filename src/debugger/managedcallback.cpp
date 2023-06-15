@@ -546,6 +546,14 @@ HRESULT STDMETHODCALLTYPE ManagedCallback::CreateProcess(ICorDebugProcess *pProc
 {
     LogFuncEntry();
 
+    auto p8 = dynamic_cast<ICorDebugProcess8*>(pProcess);
+    if (p8 != nullptr) {
+        p8->EnableExceptionCallbacksOutsideOfMyCode(false);
+        LOGI("Disabled exception callbacks outside-of-my-code");
+    } else {
+        LOGW("Failed to disable exception callbacks outside-of-my-code: p8 is null");
+    }
+
     // Important! Care about callback queue before NotifyProcessCreated() call.
     // In case of `attach`, NotifyProcessCreated() call will notify debugger that debuggee process attached and debugger
     // should stop debuggee process by dirrect `Pause()` call. From another side, callback queue have bunch of asynchronous
